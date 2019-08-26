@@ -2,15 +2,15 @@ import praw
 from twilio.rest import Client
 
 reddit = praw.Reddit(client_id='NI8XvqPAjb31Zw', client_secret='-cBaigpGIUOGmoSFcq6CfEQsWsU', user_agent='AutoWhatsapp')
-posts = []
-subreddits = ['oddlysatisfying']
+posts = {}
+subreddits = ['oddlysatisfying', 'dankmemes', 'PewdiepieSubmissions', 'wholesomememes', 'madlads']
 
 
 def scrap_reddit():
     for subreddit in subreddits:
-        hot_posts = reddit.subreddit(subreddit).hot(limit=10)
+        hot_posts = reddit.subreddit(subreddit).hot(limit=1)
         for post in hot_posts:
-            posts.append(post.url)
+            posts[subreddit] = post.url
 
 
 def send_message(event=None, context=None):
@@ -30,10 +30,10 @@ def send_message(event=None, context=None):
     contact_directory = {'Hamza Anjum': '+923206080396'}
 
     for key, value in contact_directory.items():
-        for post in posts:
+        for name, post in posts.items():
             try:
                 message = whatsapp_client.messages.create(
-                    body='Top Post from *Oddly Satisfying*: {} !'.format(post),
+                    body='Top Post from *' + name + '* ' + post + '!',
                     from_='whatsapp:+14155238886',
                     to='whatsapp:' + value,
                 )
