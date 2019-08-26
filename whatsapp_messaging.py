@@ -27,13 +27,13 @@ def send_message(event=None, context=None):
         print("Something went wrong")
 
     # Contact list to send messages to
-    contact_directory = {'Hamza Anjum': '+923206080396'}
+    contact_directory = {'Hamza Anjum': '+923206080396', 'Munii': '+923164409484'}
 
     for key, value in contact_directory.items():
         for name, post in posts.items():
             try:
                 message = whatsapp_client.messages.create(
-                    body='Top Post from *' + name + '* ' + post + '!',
+                    body=key + ", Today's top Post from *" + name + '* ' + post + '!',
                     from_='whatsapp:+14155238886',
                     to='whatsapp:' + value,
                 )
